@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Bridge AI</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(45deg, #6e0f7f, #ff4081, #01c7e1, #0078d4);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .card {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 40px;
+            width: 350px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .card h1 {
+            font-size: 3rem;
+            color: #ff4081;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .card p {
+            font-size: 1.2rem;
+            color: #e0e0e0;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .neon-button {
+            background: #ff4081;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            color: white;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 2px;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            position: relative;
+            z-index: 20;
+            overflow: hidden;
+            transition: transform 0.4s ease;
+        }
+
+        .neon-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 300%;
+            height: 300%;
+            background: #fff;
+            animation: button-glow 2s infinite ease-in-out;
+            transition: all 0.5s;
+            z-index: -1;
+        }
+
+        .neon-button:hover {
+            transform: scale(1.1);
+        }
+
+        .neon-button:active {
+            transform: scale(1);
+        }
+
+        .neon-button:focus {
+            outline: none;
+        }
+
+        @keyframes button-glow {
+            0% {
+                box-shadow: 0 0 5px #ff4081, 0 0 25px #ff4081, 0 0 50px #ff4081, 0 0 100px #ff4081;
+            }
+            50% {
+                box-shadow: 0 0 5px #ff4081, 0 0 25px #ff4081, 0 0 50px #ff4081, 0 0 100px #ff4081, 0 0 150px #ff4081;
+            }
+            100% {
+                box-shadow: 0 0 5px #ff4081, 0 0 25px #ff4081, 0 0 50px #ff4081, 0 0 100px #ff4081;
+            }
+        }
+
+        .response-container {
+            font-size: 1.3rem;
+            color: #d1d1d1;
+            margin-top: 30px;
+            font-weight: 500;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+        }
+
+        .neon-text {
+            color: #ff4081;
+            text-shadow: 0 0 10px #ff4081, 0 0 30px #ff4081, 0 0 60px #ff4081, 0 0 100px #ff4081;
+        }
+
+        .neon-text:hover {
+            text-shadow: 0 0 10px #ff4081, 0 0 30px #ff4081, 0 0 60px #ff4081, 0 0 120px #ff4081;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="card">
+            <h1 class="neon-text">Voice Bridge AI</h1>
+            <p>Press the button below and speak to the gods of AI.</p>
+            <button id="startButton" class="neon-button">Start the Divine Conversation</button>
+            <div id="responseContainer" class="response-container">Awaiting wisdom...</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const startButton = document.getElementById("startButton");
+            const responseContainer = document.getElementById("responseContainer");
+            
+            startButton.addEventListener("click", async function () {
+                responseContainer.innerHTML = "Listening...";
+                try {
+                    const response = await fetch("http://localhost:5000/start");
+                    const data = await response.json();
+                    responseContainer.innerHTML = `<strong>AI:</strong> ${data.message}`;
+                } catch (error) {
+                    console.error("Error connecting to Voice Bridge AI:", error);
+                    responseContainer.innerHTML = "Error connecting to Voice Bridge AI.";
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
